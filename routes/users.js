@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require("../models/User");
 var bcrypt = require("bcrypt");
 var { body, validationResult } = require("express-validator");
-var UserController = require("../controllers/User");
+var UserController = require("../controllers/UserController");
 
 
 /* GET users listing. */
