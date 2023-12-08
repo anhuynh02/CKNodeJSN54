@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="/stylesheets/content-table.css">
+<div id="invoice-details-pane" class="row py-3 g-3 container-fuild">
+    <div class="col-2"><button class="btn btn-primary" onclick="history.back()">Go Back</button></div>
+
+    <div class="col-12 py-3">
+        <table class="mw-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary" id="recently-sales-tb">
+            <h2 class="ps-3 py-2 m-0 bg-body-tertiary rounded-top border shadow w-100">List of Order Details</h2>
+            <thead>
+                <tr>
+                    <th scope="col">Product Id</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listInvoiceDetails}}
+                <tr>
+                    <td>{{productId}}</td>
+                    <td>{{price}}</td>
+                    <td>{{qty}}</td>
+                    <td>{{status}}</td>
+                    <td>{{formatDate createdAt}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Product Id</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+
+</div>

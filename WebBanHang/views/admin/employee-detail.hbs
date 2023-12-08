@@ -1,0 +1,223 @@
+<script>
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        var second = date.getSeconds()
+        var minute = date.getMinutes();
+        var hour = date.getHours()
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = day + "-" + month + "-" + year;
+        return formattedDate
+    }
+</script>
+<script src=""></script>
+{{#if employee}}
+<div id="employee-detail-pane" class="row py-3 g-3 container-fuild">
+
+    <!-- 1st row -->
+    <div class="col-12">
+        <!-- breadcrumb -->
+        <nav>
+            <ol class="breadcrumb fw-medium fs-4">
+                <li class="breadcrumb-item"><a href="/admin" style="color:#145DA0">Home</a></li>
+                <li class="breadcrumb-item"><a href="/admin/employees" style="color:#145DA0">Employees</a></li>
+                <li class="breadcrumb-item active">{{employee.name}}</li>
+            </ol>
+        </nav>
+        <!-- /breadcrumb -->
+    </div>
+    <!-- /1st row -->
+
+    <!-- 2nd row -->
+    <div class="col-12">
+        <div class="row g-3">
+
+            <!-- card -->
+            <div class="col-12 col-md-7">
+
+                <div class="d-flex bg-body-tertiary rounded shadow">
+
+                    <div class="w-25 text-center my-auto">
+                        <img src="/images/users/{{employee.avatarPath}}" class="rounded-circle w-75 mx-auto"
+                            alt="user-avatar">
+                        <div class="my-2">{{employee.name}}</div>
+                    </div>
+
+
+                    <div class="flex-grow-1">
+                        <table class="content-table" id="employee-detail-info-table">
+                            <tbody>
+                                <tr>
+                                    <td>Fullname</td>
+                                    <td>{{employee.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    {{#if employee.gender}}<td>{{employee.gender}}</td>{{else}}<td class="text-warning">Chưa cập nhật</td>
+                                    {{/if}}
+
+                                </tr>
+                                <tr>
+                                    <td>Birth</td>
+                                    {{#if employee.birth}}<td>
+                                        <script>
+                                            document.write(formatDate('{{employee.birth}}'))
+                                        </script>
+                                    </td>{{else}}<td class="text-warning">Chưa cập nhật</td>{{/if}}
+
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    {{#if employee.address}}<td>{{employee.address}}</td>{{else}}<td class="text-warning">Chưa cập nhật</td>
+                                    {{/if}}
+
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    {{#if employee.phone}}<td>{{employee.phone}}</td>{{else}}<td class="text-warning">Chưa cập nhật</td>
+                                    {{/if}}
+
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{{employee.email}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /card -->
+
+            <!-- view sales information base on time -->
+            <div class="col">
+                <div class="list-group list-group-flush rounded shadow salesList">
+                    <div href="#" class="list-group-item fs-3 text-center disabled bg-warning fw-medium">View sales
+                        information</div>
+                    <div class="list-group-item">Today</div>
+                    <div class="list-group-item">7 days ago</div>
+                    <div class="list-group-item">This month</div>
+                    <div class="list-group-item">
+                        <form class="input-group py-1 date-picker">
+                            <span class="input-group-text">From</span>
+                            <input id="from" type="date" name="from" class="form-control">
+
+                            <span class="input-group-text">To</span>
+                            <input id="to" type="date" name="to" class="form-control">
+
+                            <button class="btn btn-warning" type="button" id="button-addon2">Button</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /view sales information base on time -->
+        </div>
+    </div>
+    <!-- /2nd row -->
+
+    <!-- 3rd row -->
+    <div class="col-12">
+        <!-- Grid -->
+        <div class="row g-3 row-cols-1 row-cols-md-3">
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Number Of Orders</div>
+                        <div class="fs-1 fw-medium" id="numInvoicesEmployee"><!-- result of Number Of Orders--></div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to <span class="timeResult"><!-- result of time here --></span>
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!--content card: end -->
+            </div>
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Total Amount</div>
+                        <div class="fs-1 fw-medium" id="totalAmountEmployee"><!-- result of Total Amount--></div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to <span class="timeResult"><!-- result of time here --></span>
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!-- content card: end -->
+            </div>
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary ">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Number of Products</div>
+                        <div class="fs-1 fw-medium" id="numProductsEmployee"><!-- result of Number of Products--></div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to <span class="timeResult"><!-- result of time here --></span>
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!-- content card: end -->
+            </div>
+        </div>
+    </div>
+    <!-- /3rd row -->
+
+    <!-- 4rd row -->
+    <div class="col-12 py-3">
+        <table class="mw-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary">
+            <h2 class="ps-3 py-2 m-0 bg-body-tertiary rounded-top w-100">List of Orders</h2>
+            <thead>
+                <tr>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Date</th>
+                </tr>
+            </thead>
+            <tbody id="listInvoicesEmployee">
+                
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Date</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /4rd row -->
+</div>
+{{else}}
+Không tồn tại
+{{/if}}

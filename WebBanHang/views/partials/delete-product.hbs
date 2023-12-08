@@ -1,0 +1,24 @@
+<!-- Change Status dialog -->
+<div class="modal fade" id="deleteProduct" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete product</h4>
+                <button id="deleteProductClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input id="deleteFormId" type="text" class="form-control" name="id" hidden value="">
+                <span> 
+                    Bạn có muốn xóa dữ liệu này không?
+                </span>
+                <div class="invalid-feedback mt-3" id="deleteProductErr"></div>
+                <!-- Note -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="deleteProduct(event)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

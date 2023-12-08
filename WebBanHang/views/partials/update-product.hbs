@@ -1,0 +1,79 @@
+<!-- Update Product dialog -->
+<div class="modal fade" id="updateProduct" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title">Update product</h1>
+                <button type="button" id="updateProductClose" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form style="max-width: 500px;" class="m-auto" id="updateProductForm">
+                            <input id="updateFormId" type="text" class="form-control" name="id" hidden value="">
+
+                            <div class="form-floating mb-3">
+                                <input id="updateFormBarcode" type="number" class="form-control" name="barcode"
+                                    value="">
+                                <label for="floatingInput">Barcode</label>
+                                <div class="invalid-feedback mt-3" id="updateProductBarcodeErr">
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormProductName" type="text" class="form-control" name="name" value="">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="updateProductNameErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormImportPrice" type="number" class="form-control" name="iPrice"
+                                    value="">
+                                <label for="floatingInput">Import Price</label>
+                                <div class="invalid-feedback mt-3" id="updateProductImportPriceErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormPrice" type="number" class="form-control" name="price"
+                                    value="">
+                                <label for="floatingInput">Retail Price</label>
+                                <div class="invalid-feedback mt-3" id="updateProductPriceErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormDescription" type="text" class="form-control" name="desc" value="">
+                                <label for="floatingInput">Description</label>
+                                <div class="invalid-feedback mt-3" id="updateProductDescriptionErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormCategory" type="text" class="form-control" name="category"
+                                    value="">
+                                <label for="floatingInput">Category</label>
+                                <div class="invalid-feedback mt-3" id="updateProductCategoryErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormAmount" type="number" class="form-control" name="amount" value="">
+                                <label for="floatingInput">Amount</label>
+                                <div class="invalid-feedback mt-3" id="updateProductAmountErr">
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="updateProduct(event)">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<!-- Employees -->
+<script>
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = year;
+        return formattedDate
+    }
+</script>
+<div id="employees-pane" class="row py-3 container-fuild">
+    {{#if error}}
+    <p class="invalid-feedback" style="display: block !important;">
+        {{msg}}
+    </p>
+    {{else}}
+    <div class="col-12">
+        <!-- Table of Empolyees -->
+        <div class="row">
+
+            <div class="col-12">
+                <div class="d-flex justify-content-between bg-body-tertiary py-1 rounded-top">
+
+                    <div class="ms-2 fs-2">Employees</div>
+
+                    <div class="me-2">
+                        <button type="button" class="btn btn-primary fs-5 w-100" 
+                            data-bs-toggle="modal" data-bs-target="#newEmployee">
+                            New Employee
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12">
+                <table class="w-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-md-auto">Avatar</th>
+                            <th scope="col" class="col-md-auto">Fullname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Birth</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each Users}}
+                        <tr>
+                            <td style="display:none">{{_id}}</td>
+                            <td><img src="/images/users/{{avatarPath}}" class="rounded-circle" alt=""
+                                    style="width:4em; aspect-ratio: 1;">
+                            </td>
+                            <td>{{name}}</td>
+                            <td>{{email}}</td>
+                            {{!-- gender --}}
+                            {{#if gender}}
+                            <td>{{gender}}</td>
+                            {{else}}
+                            <td>Chưa cập nhật</td>
+                            {{/if}}
+                            {{!-- birth --}}
+                            {{#if birth}}
+                            <td>
+                                <script>
+                                    let date = `{{birth}}`
+                                    document.write(formatDate(date))
+                                </script>
+                            </td>
+                            {{else}}
+                            <td>Chưa cập nhật</td>
+                            {{/if}}
+                            {{!-- address --}}
+                            {{#if address}}
+                            <td>{{address}}</td>
+                            {{else}}
+                            <td>Chưa cập nhật</td>
+                            {{/if}}
+                            {{!-- phone --}}
+                            {{#if phone}}
+                            <td>{{phone}}</td>
+                            {{else}}
+                            <td>Chưa cập nhật</td>
+                            {{/if}}
+                            {{#if status}}
+                            <td style="color: green;">Unlock</td>
+                            {{else}}
+                            <td style="color: red;">Locked</td>
+                            {{/if}}
+                            <td>
+                                <div class="btn-group w-100">
+                                    <button type="button" class="btn btn-danger fs-5 w-50" onclick="sendEmailtoCSE('{{email}}')"
+                                        data-bs-toggle="modal" data-bs-target="#changeStatusEmployee">
+                                        {{{buttonStatus status}}}
+                                    </button>
+
+                                    {{!-- <a href="#" data-toggle="modal" data-target="#changeStatusEmployee"
+                                        onclick="sendEmailtoCSE('{{email}}')" class="btn btn-danger fs-5 w-50">
+                                        <i class="fa-solid fa-lock"></i>
+                                        {{#if status}}
+                                        Lock
+                                        {{else}}
+                                        Unlock
+                                        {{/if}}
+                                    </a> --}}
+                                    <button type="button" class="btn btn-success fs-5 w-50" onclick="fillInfo('{{_id}}')"
+                                        data-bs-toggle="modal" data-bs-target="#updateEmployee">
+                                        <i class="fa-solid fa-refresh"></i>
+                                        Update
+                                    </button>
+                                    {{!-- <a href="#" data-toggle="modal" data-target="#updateEmployee" onclick="fillInfo('{{_id}}')"
+                                        class="btn btn-success fs-5 w-50"></a> --}}
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">Fullname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Birth</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /Table of Empolyees -->
+    </div>
+    <div id="resultContainer"></div>
+    <div class="col-12">
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination justify-content-center mt-3">
+                <li class="page-item">
+                    <a class="page-link">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /Pagination -->
+    </div>
+    {{/if}}
+</div>
+<!-- Employee-->

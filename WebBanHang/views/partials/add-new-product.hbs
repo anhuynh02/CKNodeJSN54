@@ -1,0 +1,81 @@
+<!-- New Product dialog -->
+<div class="modal fade" id="newProduct" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Add new product</h1>
+                <button id="addProductClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form enctype="multipart/form-data" style="max-width: 500px;" class="m-auto"
+                            id="addProductForm">
+                            <div class="form-floating mb-3">
+                                <input id="addFormBarcode" type="number" class="form-control" name="barcode" value="">
+                                <label for="floatingInput">Barcode</label>
+                                <div class="invalid-feedback mt-3" id="addProductBarcodeErr">
+                                </div>
+                            </div>
+                            {{!-- <div class="form-floating mb-3">
+                                <input id="addFormImage" type="file" class="form-control" name="image" accept="image/*">
+                                <label for="floatingInput">Image</label>
+                                <div class="invalid-feedback mt-3" id="addProductImageErr">
+                                </div>
+                            </div> --}}
+                            <div class="form-floating mb-3">
+                                <input id="addFormProductName" type="text" class="form-control" name="name" value="">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="addProductNameErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormImportPrice" type="number" class="form-control" name="iPrice"
+                                    value="">
+                                <label for="floatingInput">Import Price</label>
+                                <div class="invalid-feedback mt-3" id="addProductImportPriceErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormPrice" type="number" class="form-control" name="price" value="">
+                                <label for="floatingInput">Retail Price</label>
+                                <div class="invalid-feedback mt-3" id="addProductPriceErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormDescription" type="text" class="form-control" name="desc" value="">
+                                <label for="floatingInput">Description</label>
+                                <div class="invalid-feedback mt-3" id="addProductDescriptionErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormCategory" type="text" class="form-control" name="category" value="">
+                                <label for="floatingInput">Category</label>
+                                <div class="invalid-feedback mt-3" id="addProductCategoryErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormAmount" type="number" class="form-control" name="amount" value="">
+                                <label for="floatingInput">Amount</label>
+                                <div class="invalid-feedback mt-3" id="addProductAmountErr">
+
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="addProduct(event)">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

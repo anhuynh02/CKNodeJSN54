@@ -1,0 +1,566 @@
+<div class="row justify-content-md-center">
+    <div class="col-4 text-left ">
+        <a href="/" class="btn btn-primary">Home</a>
+    </div>
+    <div class="col-4 text-center">
+        <h3>TDTU STORE</h3>
+    </div>
+    <div class="col-4 text-right" style="display: flex;
+  justify-content: right;">
+        <a href="/users" class="btn btn-success">
+            <span class="d-none d-md-block">{{userName}}</span><i class="d-block d-md-none fa-solid fa-user"></i>
+        </a>
+
+        <a href="/logout" class="btn btn-warning">
+            <i class="fa fa-sign-out"></i>
+        </a>
+    </div>
+
+</div>
+
+<div class="row mt-3">
+    <div class="col-xl-5 m-xl-1 bg-white rounded shadow p-3 bg-body">
+
+        <div class="m-3 row">
+            <div class="col-8">
+                <input type="text" class="form-control" placeholder="Input phone number" id="customerPhone"
+                    name="phone">
+            </div>
+
+            <div class="col">
+                <button class="btn btn-success" onclick="checkCustomer()" title="Check User"><i
+                        class="fa fa-plus"></i></button>
+            </div>
+            <div class="col">
+                <button id="createInvoiceBtn" class="btn btn-success" onclick="addNewInvoice()"
+                    title="Create Invoice"><i class="fa fa-file-lines"></i></button>
+            </div>
+            <a id="addCustomerLink" href="#" data-toggle="modal" data-target="#newCustomer" class="btn btn-primary"
+                hidden>New
+                Customer</a>
+            <div class="invalid-feedback mt-3" id="customerError">
+
+            </div>
+            <div id="customerId" hidden></div>
+            <div class="col mt-3" id="customerInfo">
+
+            </div>
+            <div class="col-12 mb-3">
+                Invoice ID: <span id="invoiceId"></span>
+            </div>
+        </div>
+        <table class="table table-borderless">
+            <thead>
+                <th hidden>Id</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+            </thead>
+            <tbody id="invoice-details-container">
+
+            </tbody>
+        </table>
+        <hr>
+        <div class="row m-3 sticky-footer">
+            <div class="col-6">Total Item(s): <strong id="countProduct"></strong></div>
+            <div class="col-6">Price: <strong id="totalPrice"></strong></div>
+            <div class="col mt-3">
+                <div class="row">
+                    <div class="col-8">
+                        <input id="givenAmount" type="text" class="form-control"
+                            placeholder="Số tiền nhận được từ khách">
+                        <div class="invalid-feedback mt-3" id="givenAmountErr">
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button id="payInvoiceBtn" class="btn btn-success" onclick="paymentFunc()" title="Payment"><i
+                                class="fa fa-money-bills"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <p class="d-block d-lg-none h3 text-center mt-2">
+        <mark>
+            PRODUCT LIST
+        </mark>
+    </p>
+    <div class="col bg-white m-lg-1 rounded shadow p-3  bg-body">
+        <div class="m-3 sticky-top">
+            <div class="col">
+                <div class="row">
+                    <div class="col-10">
+                        <input id="productName" type="text" class="form-control" placeholder="Search by name"
+                            name="productName" oninput="getProductList()">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div id="products-container" class="row overflow-auto" style="max-height: 453px;">
+
+
+        </div>
+    </div>
+    <!-- New customer dialog -->
+    <div class="modal fade" id="newCustomer">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Add new customer</h4>
+                    <button id="addCustomerClose" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <main class="form-signin w-100 m-auto">
+                            <form style="max-width: 500px;" class="m-auto" id="addCustomerForm">
+                                <div class="form-floating mb-3">
+                                    <input id="addFormName" type="text" class="form-control" name="name" value="">
+                                    <label for="floatingInput">Name</label>
+                                    <div class="invalid-feedback mt-3" id="addCustomerNameErr">
+
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input id="addFormAddress" type="email" class="form-control" name="address"
+                                        value="">
+                                    <label for="floatingInput">Address</label>
+                                    <div class="invalid-feedback mt-3" id="addCustomerAddressErr">
+
+                                    </div>
+                                </div>
+                            </form>
+                        </main>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addCustomer(event)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning alert-dismissible fade  position-absolute top-50 start-50 translate-middle"
+    role="alert">
+    <p id="successMsg"></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<script>
+    $("#createInvoiceBtn").click()
+    function formatPrice(price) {
+        // Chuyển đổi số thành chuỗi và thêm dấu chấm ngăn cách hàng nghìn
+        const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        // Thêm đơn vị tiền tệ
+        const result = `${formattedPrice} VND`;
+
+        return result;
+    }
+    function formatName(name, maxLength = 12) {
+        if (name.length > maxLength) {
+            // Nếu tên dài hơn maxLength, cắt đi phần sau và thêm dấu "..."
+            return name.substring(0, maxLength) + "...";
+        }
+        // Nếu không, trả về tên ban đầu
+        return name;
+    }
+    function renderProduct(products) {
+        let productsList = ''
+        // Check if the input is an array
+        if (!Array.isArray(products)) {
+            products = [products]
+        }
+
+
+        products.forEach(product => {
+            console.log(product)
+            let price = formatPrice(product.price)
+            let name = formatName(product.name, 10)
+            productsList += `<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="./images/products/product.png" class="card-img-top" alt="...">
+
+                    <div class="card-body">
+                        <h5 class="card-title">${name}</h5>
+                        <p class="card-text">${price} - Qty: ${product.amount}</p>
+                        <a href="#" class="btn btn-primary" onclick="addInvoiceDetail('${product._id}')">Add</a>
+                    </div>
+                </div>
+            </div>`
+        });
+        $("#products-container").html(productsList)
+
+
+
+    }
+    getProductList()
+    function getProductList() {
+        let name = $("#productName").val()
+        fetch('/transaction/getProduct', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    renderProduct(data.Product)
+                } else {
+                    $("#products-container").html(data.message)
+                    console.log(data)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function checkCustomer() {
+        fetch('/transaction/getCustomer', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                phone: $('#customerPhone').val()
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    console.log(data)
+                    $('#customerInfo').html(`<a href="/customers/${data.Customer[0]._id}">${data.Customer[0].name} - ${data.Customer[0].address} - ${data.Customer[0].phone}</a>`);
+                    $("#customerId").text(data.Customer[0]._id)
+                    $("#customerError").text("")
+
+                } else {
+                    if (data.err) {
+                        $("#customerError").text(data.err)
+                    } else {
+                        $("#addCustomerLink").click();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function addCustomer(ev) {
+        fetch('/transaction/addCustomer', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                phone: $('#customerPhone').val() || "",
+                name: $('#addFormName').val() || "",
+                address: $('#addFormAddress').val() || ""
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(data)
+                    // Update the result container with a success message
+                    $("#addCustomerClose").click();
+                    $('#customerInfo').html(`<a href="/customers/${data.Customer._id}">${data.Customer.name} - ${data.Customer.address} - ${data.Customer.phone}</a>`);
+                    $("#payInvoiceBtn").prop('disabled', false)
+                    $("#customerError").text("")
+                } else {
+                    $("#addCustomerNameErr").text(data.nameErr || "");
+                    $("#addCustomerAddressErr").text(data.addressErr || "");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    //Add invoice if there is none usable invoice else get that invoice then render into invoice-container
+    function addInvoiceDetail(id) {
+        let invoiceId = $("#invoiceId").text();
+
+        // Check if invoiceId is empty, trigger the createInvoiceBtn click, and update invoiceId
+        if (invoiceId === "") {
+            $("#createInvoiceBtn").click();
+            invoiceId = $("#invoiceId").text();
+        }
+
+
+        fetch('/transaction/addInvoiceDetail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                invoiceId: invoiceId,
+                productId: id
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderInvoice(data.invoice)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function addNewInvoice() {
+        fetch('/transaction/addNewInvoice', {
+            method: 'post'
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(data)
+                    $("#createInvoiceBtn").prop('disabled', true)
+                    $("#invoiceId").text(data.Invoice._id)
+                    if (data.Invoice.invoiceDetails.length != 0) {
+                        renderInvoice(data.Invoice)
+                    } else {
+                        $("#invoice-details-container").text("Empty Invoice")
+                    }
+
+                } else {
+                    console.log(data)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    $("#totalPrice").text(formatPrice('0'))
+    $("#countProduct").text('0')
+    function renderInvoice(invoice) {
+        $("#invoice-details-container").html("")
+        let totalAmount = 0
+        let count = 0
+        if (!invoice.invoiceDetail) {
+            $("#totalPrice").text(formatPrice(0))
+            $("#countProduct").text('0')
+        }
+        invoice.invoiceDetails.forEach(invoiceDetail => {
+            //
+            getInvoiceDetail(invoiceDetail).then(data => {
+                totalAmount += data.total
+                count++
+                $("#totalPrice").text(formatPrice(totalAmount))
+                $("#countProduct").text(count)
+                $("#invoice-details-container").append(data.tr)
+            }).then(err => {
+                console.log(err)
+            })
+        })
+    }
+    function getInvoiceDetail(id) {
+        return new Promise((resolve, reject) => {
+            fetch('/transaction/getInvoiceDetail', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    invoiceDetailId: id
+                }),
+            })
+                .then(response => response.json()) // Assuming the server responds with JSON
+                .then(data => {
+                    if (data.success) {
+                        getProductFromInvoiceDetail(data.invoiceDetail.productId).then(product => {
+                            let tr = ''
+                            console.log("Product:", product);
+                            invoiceDetail = data.invoiceDetail
+                            let price = formatPrice(invoiceDetail.price)
+                            let total = formatPrice(invoiceDetail.price * invoiceDetail.qty)
+                            let id = formatName(invoiceDetail._id, 7)
+                            tr = `<tr>
+                               <td hidden>${id}</td> 
+                               <td>${product.name}</td> 
+                               <td>
+                                <input class="form-control" min="0" max="${product.amount}" value="${invoiceDetail.qty}" oninput="updateQty('${invoiceDetail._id}', this.value)" type="number">
+                                </td>
+ 
+                               <td>${price}</td> 
+                               <td>${total}</td>
+                               <td><button class="btn btn-warning" onclick="deleteInvoiceDetail('${invoiceDetail._id}')"><i class="fa fa-trash"></i></td>
+                            </tr>`
+                            resolve({ tr, total: invoiceDetail.price * invoiceDetail.qty })
+                        })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    } else {
+                        reject(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
+    function deleteInvoiceDetail(id) {
+        console.log("a")
+        fetch('/transaction/deleteInvoideDetail', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                invoiceDetailId: id,
+                invoiceId: $("#invoiceId").text()
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    renderInvoice(data.invoice)
+                } else {
+                    console.log(data)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function updateQty(id, qty) {
+        console.log(qty)
+        fetch('/transaction/updateQty', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                invoiceDetailId: id,
+                qty: qty
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    renderInvoice(data.invoice)
+                } else {
+                    console.log(data)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function getProductFromInvoiceDetail(id) {
+        return new Promise((resolve, reject) => {
+            fetch('/transaction/getProductFromInvoiceDetail', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: id
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        resolve(data.product);
+                    } else {
+                        reject(data); // Hoặc có thể truyền một thông báo lỗi cụ thể nếu cần
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+    function paymentFunc() {
+        let customerId = $("#customerId").text() || ""
+        let invoiceId = $("#invoiceId").text()
+        let givenAmount = $("#givenAmount").val() || ""
+        fetch('/transaction/payment', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                customerId: customerId,
+                invoiceId: invoiceId,
+                givenAmount: givenAmount
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let alert = `
+                    <div id="successAlert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">Thanh toán thành công</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#successAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                    $("#createInvoiceBtn").prop('disabled', false)
+                    addNewInvoice()
+                    $("#customerId").text("")
+                    $("#customerInfo").text("")
+                    $("#givenAmount").val("")
+                    $("#customerPhone").val("")
+                    $("#givenAmountErr").text("")
+                    $("#customerError").text("")
+                    $("#totalPrice").text(formatPrice('0'))
+                    $("#countProduct").text('0')
+                    getProductList()
+                } else {
+                    if (data.message) {
+                        let alert = `
+                    <div id="failAlert" class="alert alert-warning alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                        $("body").append(alert)
+                        let alertX = $("#failAlert")
+                        setTimeout(function () {
+                            alertX.remove();
+                        }, 1000);
+                    }
+                    let errors = data.errors || []
+                    if (errors.length > 0) {
+                        errors.forEach(error => {
+                            console.log(error)
+                            switch (error.field) {
+                                case "customerId":
+                                    $("#customerError").text(error.message)
+                                    break;
+                                case "givenAmount":
+                                    $("#givenAmountErr").text(error.message)
+                                default:
+                            }
+                        })
+                    }
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+    }
+</script>

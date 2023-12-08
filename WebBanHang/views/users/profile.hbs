@@ -1,0 +1,421 @@
+<!-- CSS  -->
+<link rel="stylesheet" href="/stylesheets/user-profile.css">
+<link rel="stylesheet" href="/stylesheets/content-table.css">
+<script src="/javascript/user-profile.js"></script>
+<div class="main-body">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+        </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <div class="image-container">
+                            <img src="/images/users/{{user.avatarPath}}" alt="Admin" class="rounded-circle" width="150"
+                                height="150" id="userAvatar">
+                            <button class="change-image-button rounded-circle" onclick='$("#fileInput").click()'>Change
+                                Image</button>
+                        </div>
+                        <form id="uploadForm" enctype="multipart/form-data" hidden>
+                            <input type="file" name="file" id="fileInput" onchange='$("#uploadForm").submit()' />
+                        </form>
+                        <div class="mt-3">
+                            <h4>{{user.name}}</h4>
+                            <p id="userId" style="display: none;">{{user._id}}</p>
+                            <p class="text-secondary mb-3">Employee</p>
+                            <button class="btn btn-primary">Follow</button>
+                            <button class="btn btn-outline-primary">Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="feather feather-github mr-2 icon-inline">
+                                <path
+                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                </path>
+                            </svg>Github</h6>
+                        <span class="text-secondary"><a href="https://github.com/anhuynh02">anhuynh02</a></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- sales list -->
+            <div class="col mt-3">
+                <div class="list-group list-group-flush rounded shadow salesList">
+                    <div href="#" class="list-group-item fs-3 text-center disabled bg-warning fw-medium">View sales
+                        information</div>
+                    <div class="list-group-item">Today</div>
+                    <div class="list-group-item">7 days ago</div>
+                    <div class="list-group-item">This month</div>
+                    <div class="list-group-item">
+                        <form class="input-group py-1 date-picker">
+                            <span class="input-group-text">From</span>
+                            <input id="from" type="date" name="from" class="form-control">
+
+                            <span class="input-group-text">To</span>
+                            <input id="to" type="date" name="to" class="form-control">
+
+                            <button class="btn btn-warning" type="button" id="button-addon2">Button</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /sales list -->
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{user.name}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{user.email}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Mobile</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{#if user.phone}}{{user.phone}} {{else}}Chưa cập nhật{{/if}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Address</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{#if user.address}}{{user.address}}{{else}}Chưa cập nhật{{/if}}
+
+                        </div>
+                    </div>
+                    {{#if isMy}}
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateEmployee"
+                                onclick="getInfo()">Edit</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a class="btn btn-info " href="/users/change-password">Change Password</a>
+                        </div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="col-12">
+                <!-- Grid -->
+                <div class="row g-3 row-cols-1">
+
+                    <div class="col">
+                        <!-- content card: start -->
+                        <div class="d-flex align-items-center py-2 rounded bg-white shadow">
+                            <div class="ms-4 flex-grow-1">
+                                <div class="fs-3 fw-semibold">Number Of Orders</div>
+                                <div class="fs-1 fw-medium" id="numInvoicesEmployee"><!-- result of Number Of Orders-->
+                                </div>
+                                <div class="fw-medium fs-5 py-2">
+                                    <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                                    Up to <span class="timeResult"><!-- result of time here --></span>
+                                </div>
+                            </div>
+                            <div class="ms-auto me-4 square-wrapper"
+                                style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                                <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                            </div>
+                        </div>
+                        <!--content card: end -->
+                    </div>
+
+                    <div class="col">
+                        <!-- content card: start -->
+                        <div class="d-flex align-items-center py-2 rounded bg-white shadow">
+                            <div class="ms-4 flex-grow-1">
+                                <div class="fs-3 fw-semibold">Total Amount</div>
+                                <div class="fs-1 fw-medium" id="totalAmountEmployee"><!-- result of Total Amount-->
+                                </div>
+                                <div class="fw-medium fs-5 py-2">
+                                    <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                                    Up to <span class="timeResult"><!-- result of time here --></span>
+                                </div>
+                            </div>
+                            <div class="ms-auto me-4 square-wrapper"
+                                style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                                <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- content card: end -->
+                    </div>
+
+                    <div class="col">
+                        <!-- content card: start -->
+                        <div class="d-flex align-items-center py-2 rounded bg-white shadow">
+                            <div class="ms-4 flex-grow-1">
+                                <div class="fs-3 fw-semibold">Number of Products</div>
+                                <div class="fs-1 fw-medium" id="numProductsEmployee">
+                                    <!-- result of Number of Products--></div>
+                                <div class="fw-medium fs-5 py-2">
+                                    <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                                    Up to <span class="timeResult"><!-- result of time here --></span>
+                                </div>
+                            </div>
+                            <div class="ms-auto me-4 square-wrapper"
+                                style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                                <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- content card: end -->
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Row for Tables -->
+    <div class="col-12 py-3">
+        <table class="mw-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary">
+            <h2 class="ps-3 py-2 m-0 bg-white shadow rounded-top w-100">List of Orders</h2>
+            <thead>
+                <tr>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Date</th>
+                </tr>
+            </thead>
+            <tbody id="listInvoicesEmployee">
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Amount</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /Row for Tables -->
+
+</div>
+<!-- Update employee dialog -->
+<div class="modal fade" id="updateEmployee" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Update Employee</h4>
+                <button type="button" id="updateEmployeeClose" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form style="max-width: 500px;" class="m-auto" id="updateEmployeeForm">
+                            <div class="form-floating mb-3">
+                                <input id="updateFormName" type="text" class="form-control" name="name"
+                                    value="{{user.name}}">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeNameErr">
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    name="gender" id="updateFormGender">
+                                    <option selected>Chose your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeGenderErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormAddress" type="text" class="form-control" name="address"
+                                    value="{{user.address}}">
+                                <label for="floatingInput">Address</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeAddressErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormBirth" type="date" class="form-control" name="birth"
+                                    value="{{user.birth}}">
+                                <label for="floatingInput">Birth</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeBirthErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormPhone" type="text" class="form-control" name="phone"
+                                    value="{{user.phone}}">
+                                <label for="floatingInput">Phone</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeePhoneErr">
+
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="updateEmployee(event)">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        var second = date.getSeconds()
+        var minute = date.getMinutes();
+        var hour = date.getHours()
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = year + "-" + month + "-" + day;
+        return formattedDate
+    }
+    function getInfo() {
+        $("#updateFormBirth").val(formatDate('{{user.birth}}'))
+        $("#updateFormGender").val('{{user.gender}}')
+    }
+    function updateEmployee(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        // Send a POST request using AJAX
+        let name = $("#updateFormName").val()
+        let gender = $("#updateFormGender").val()
+        let address = $("#updateFormAddress").val()
+        let birth = $("#updateFormBirth").val()
+        console.log(birth)
+        let phone = $("#updateFormPhone").val()
+        fetch('/users/updateProfile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                gender: gender,
+                address: address,
+                birth: birth,
+                phone: phone
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#updateEmployeeClose').click(); let alert = `
+                    <div id="failAlert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    $("#updateEmployeeNameErr").text(data.nameErr)
+                    $("#updateEmployeeGenderErr").text(data.genderErr)
+                    $("#updateEmployeeAddressErr").text(data.addressErr)
+                    $("#updateEmployeeBirthErr").text(data.birthErr)
+                    $("#updateEmployeePhoneErr").text(data.phoneErr)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    $("#uploadForm").on('submit', evt => {
+        evt.preventDefault()
+        const body = new FormData(evt.target)
+        const container = document.getElementById('vacationPhotoContestFormContainer')
+        fetch('/users/upload', { method: 'post', body })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#updateEmployeeClose').click(); let alert = `
+                    <div id="failAlert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">Cập nhật avatar thành công</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    $('#updateEmployeeClose').click(); let alert = `
+                    <div id="failAlert" class="alert alert-warning alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    })
+</script>

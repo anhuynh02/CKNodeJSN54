@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .invalid-feedback {
+            display: block !important;
+        }
+
+        a:link {
+            text-decoration: none;
+            color: white !important;
+        }
+
+        a {
+            color: white;
+        }
+
+        .modal {
+            z-index: 3000;
+        }
+    </style>
+    <!-- CSS Admin dasboard -->
+    <link rel="stylesheet" href="/stylesheets/admin-management.css">
+
+    <!-- JS Admin dashboard -->
+    <script src="/javascript/admin-management.js"></script>
+</head>
+
+<body class="bg-secondary-subtle font-monospace">
+    <!-- Layout -->
+    <div id="layout-wrapper" class="container-fluid ">
+        <div class="row">
+
+            <!-- Header -->
+            {{> header}}
+            <!-- /Header -->
+
+            <!-- Sidebar -->
+            {{> sidebar}}
+            <!-- /Sidebar -->
+
+            <!-- Content  -->
+            <div style="width:84%; margin-left:16%;" id="content-wrapper">
+                {{{body}}}
+            </div>
+            <!-- /Content -->
+
+        </div>
+    </div>
+    <!-- /Layout -->
+
+</body>
+{{> add-new-employee}}
+{{> change-employee-status}}
+{{> update-employee}}
+{{> add-new-product}}
+{{> update-product}}
+{{> delete-product}}
+
+<script>
+    //
+    function addProduct(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        event.preventDefault();
+        // Send a POST request using AJAX
+        fetch('/admin/addProduct', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                barcode: $('#addFormBarcode').val(),
+                name: $('#addFormProductName').val(),
+                iPrice: $('#addFormImportPrice').val(),
+                price: $('#addFormPrice').val(),
+                desc: $('#addFormDescription').val(),
+                category: $('#addFormCategory').val(),
+                amount: $('#addFormAmount').val(),
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#addProductClose').click();
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    $("#addProductBarcodeErr").text(data.barcodeErr)
+                    $("#addProductNameErr").text(data.nameErr)
+                    $("#addProductImportPriceErr").text(data.iPriceErr)
+                    $("#addProductPriceErr").text(data.priceErr)
+                    $("#addProductDescriptionErr").text(data.descErr)
+                    $("#addProductCategoryErr").text(data.categoryErr)
+                    $("#addProductAmountErr").text(data.amountErr)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function updateProduct(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        event.preventDefault();
+        let id = $("#updateFormId").val()
+        // Send a POST request using AJAX
+        fetch('/admin/updateProduct', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: $('#updateFormId').val(),
+                barcode: $('#updateFormBarcode').val(),
+                name: $('#updateFormProductName').val(),
+                iPrice: $('#updateFormImportPrice').val(),
+                price: $('#updateFormPrice').val(),
+                desc: $('#updateFormDescription').val(),
+                category: $('#updateFormCategory').val(),
+                amount: $('#updateFormAmount').val(),
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(data);
+                    // Update the result container with a success message
+                    console.log(data)
+                    $('#updateProductClose').click();
+                    let alert = `
+                    <div id="failAlert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert" style="z-index: 15000">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    $("#updateProductBarcodeErr").text(data.barcodeErr)
+                    $("#updateProductNameErr").text(data.nameErr)
+                    $("#updateProductImportPriceErr").text(data.iPriceErr)
+                    $("#updateProductPriceErr").text(data.priceErr)
+                    $("#updateProductDescriptionErr").text(data.descErr)
+                    $("#updateProductCategoryErr").text(data.categoryErr)
+                    $("#updateProductAmountErr").text(data.amountErr)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function productInfo(id) {
+        fetch('/admin/getProductInfo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(data)
+                    $("#updateFormId").val(data.Product._id)
+                    $("#updateFormBarcode").val(data.Product.barcode)
+                    $("#updateFormProductName").val(data.Product.name)
+                    $("#updateFormImportPrice").val(data.Product.iPrice)
+                    $("#updateFormPrice").val(data.Product.price)
+                    $("#updateFormDescription").val(data.Product.desc)
+                    $("#updateFormCategory").val(data.Product.category)
+                    $("#updateFormAmount").val(data.Product.amount)
+
+                    $("#deleteFormId").val(data.Product._id)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+    }
+    function deleteProduct(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        // Send a POST request using AJAX
+        let id = $("#deleteFormId").val()
+
+        fetch('/admin/deleteProduct', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#deleteProductClose').click();
+
+                    let alert = `
+                    <div id="failAlert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    $("#deleteProductClose").click()
+                    let alert = `
+                    <div id="failAlert" class="alert alert-warning alert-dismissible fade show position-absolute top-50 start-50 translate-middle" style="z-index:15000" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <p id="successMsg">${data.message}</p>
+                    </div>
+                    `
+                    $("body").append(alert)
+                    let alertX = $("#failAlert")
+                    setTimeout(function () {
+                        alertX.remove();
+                    }, 1500);
+
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+
+    //
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = year + '-' + month + '-' + day;
+        return formattedDate
+    }
+    // JavaScript code for handling form submission
+    function addEmployee(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        event.preventDefault();
+        // Send a POST request using AJAX
+        fetch('/addEmployee', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: $('#addFormName').val(),
+                email: $('#addFormEmail').val()
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#addEmployeeClose').click();
+                    resultContainer.innerHTML = '<p class="text-success">Employee added successfully</p>';
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    $("#addEmployeeNameErr").text(data.nameErr)
+                    $("#addEmployeeEmailErr").text(data.emailErr)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function sendEmailtoCSE(email) {
+        $('#emailStatusChange').val(email)
+    }
+    function changeStatusEmployee(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        // Send a POST request using AJAX
+        fetch('/admin/changeStatusEmployee', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: $('#emailStatusChange').val()
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#changeStatusEmployeeClose').click();
+                    resultContainer.innerHTML = '<p class="text-success">Lock/ Unlock employee successfully</p>';
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function fillInfo(id) {
+        fetch('/admin/GetUserInfo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(formatDate(data.User.birth))
+                    $("#updateFormId").val(data.User._id)
+                    $("#updateFormName").val(data.User.name)
+                    $("#updateFormGender").val(data.User.gender)
+                    $("#updateFormAddress").val(data.User.address)
+                    $("#updateFormBirth").val(formatDate(data.User.birth))
+                    $("#updateFormPhone").val(data.User.phone)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+    }
+
+    function updateEmployee(event) {
+        const resultContainer = document.getElementById('resultContainer');
+        // Send a POST request using AJAX
+        let id = $("#updateFormId").val()
+        let name = $("#updateFormName").val()
+        let gender = $("#updateFormGender").val()
+        let address = $("#updateFormAddress").val()
+        let birth = $("#updateFormBirth").val()
+        console.log(birth)
+        let phone = $("#updateFormPhone").val()
+        fetch('/admin/updateEmployee', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                gender: gender,
+                address: address,
+                birth: birth,
+                phone: phone
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    // Update the result container with a success message
+                    $('#updateEmployeeClose').click();
+                    resultContainer.innerHTML = '<p class="text-success">Update success</p>';
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    $("#updateEmployeeNameErr").text(data.nameErr)
+                    $("#updateEmployeeGenderErr").text(data.genderErr)
+                    $("#updateEmployeeAddressErr").text(data.addressErr)
+                    $("#updateEmployeeBirthErr").text(data.birthErr)
+                    $("#updateEmployeePhoneErr").text(data.phoneErr)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</html>

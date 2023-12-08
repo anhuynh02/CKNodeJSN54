@@ -1,0 +1,114 @@
+<!-- Products Pane-->
+<script>
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = day + "-"+month+"-"+ year;
+        return formattedDate
+    }
+</script>
+<div id="products-pane" class="row py-3 container-fuild">
+
+    <div class="col-12">
+        <div class="d-flex justify-content-between bg-body-tertiary py-1 rounded-top">
+
+            <div class="ms-2 fs-2">Products</div>
+
+            <div class="me-2">
+                <button type="button" class="btn btn-primary fs-5 w-100" data-bs-toggle="modal"
+                    data-bs-target="#newProduct">
+                    New Product
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-12">
+        <!-- Table of Products -->
+        <table class="w-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary">
+            <thead>
+                <tr>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Import Price</th>
+                    <th scope="col">Retail Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each result}}
+                <tr key={{_id}}>
+                    <td>{{barcode}}</td>
+                    <td>{{name}}</td>
+                    <td>{{iPrice}} VND</td>
+                    <td>{{price}} VND</td>
+                    <td>{{category}}</td>
+                    <td>{{amount}}</td>
+                    <td>
+                        <script>
+                                    
+                                    document.write(formatDate(`{{createdAt}}`))
+                                </script>
+                        </td>
+                    <td>
+                        <div class="btn-group w-100">
+                            <button type="button" class="btn btn-warning w-50 fs-5" onclick="productInfo('{{_id}}')"
+                                data-bs-toggle="modal" data-bs-target="#updateProduct">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                            <button type="button" class="btn btn-danger w-50 fs-5" onclick="productInfo('{{_id}}')"
+                                data-bs-toggle="modal" data-bs-target="#deleteProduct">
+                                <i class="fa-solid fa-trash"></i></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                    {{/each}}
+
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Import Price</th>
+                    <th scope="col">Retail Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- /Table of Products -->
+    </div>
+
+    <div class="col-12">
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination justify-content-center mt-3">
+                <li class="page-item">
+                    <a class="page-link">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /Pagination -->
+    </div>
+
+</div>
+<!-- /Products -->

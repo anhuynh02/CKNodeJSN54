@@ -1,0 +1,144 @@
+<!-- Dashboard Pane -->
+<div id="dashboard-pane" class="row pt-3 g-3 container-fuild">
+    
+    <!-- view sales information base on time -->
+        <div class="col">
+            <div class="list-group list-group-flush rounded shadow salesList">
+                <div href="#" class="list-group-item fs-3 text-center disabled bg-warning fw-medium">View sales
+                    information</div>
+                <div class="list-group-item">Today</div>
+                <div class="list-group-item">7 days ago</div>
+                <div class="list-group-item">This month</div>
+                <div class="list-group-item">
+                    <from class="input-group py-1 date-picker" method="get" action="">
+                        <span class="input-group-text">From</span>
+                        <input id="from" type="date" name="from" class="form-control" value="{{start}}">
+
+                        <span class="input-group-text">To</span>
+                        <input id="to" type="date" name="to" class="form-control" value="{{end}}">
+
+                        <button class="btn btn-warning" type="submit" id="button-addon2">Button</button>
+                    </from>
+                </div>
+            </div>
+        </div>
+    <!-- /view sales information base on time -->
+    
+
+    <!-- Row for Cards -->
+    <div class="col-12">
+        <!-- Grid -->
+        <div class="row g-3 row-cols-1 row-cols-md-3">
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Number Of Orders</div>
+                        <div class="fs-1 fw-medium">{{numInvoices}}</div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to {{time}}
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!--content card: end -->
+            </div>
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Total Amount</div>
+                        <div class="fs-1 fw-medium">{{totalAmount}}</div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to {{time}}
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!-- content card: end -->
+            </div>
+
+            <div class="col">
+                <!-- content card: start -->
+                <div class="d-flex align-items-center py-2 rounded bg-body-tertiary ">
+                    <div class="ms-4 flex-grow-1">
+                        <div class="fs-3 fw-semibold">Number of Products</div>
+                        <div class="fs-1 fw-medium">{{numProducts}}</div>
+                        <div class="fw-medium fs-5 py-2">
+                            <i class="fa-solid fa-circle-arrow-up text-primary"></i>
+                            Up to {{time}}
+                        </div>
+                    </div>
+                    <div class="ms-auto me-4 square-wrapper"
+                        style="background-color: #60A3D9; color: #003060; width: 3.5rem; height: 3.5rem;">
+                        <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+                    </div>
+                </div>
+                <!-- content card: end -->
+            </div>
+
+        </div>
+    </div>
+    <!-- /Row for Cards -->
+
+    <!-- Row for Tables -->
+    <div class="col-12 py-3">
+        <table class="mw-100 content-table content-table-hover fw-semibold shadow bg-body-tertiary" id="recently-sales-tb">
+            <h2 class="ps-3 py-2 m-0 bg-body-tertiary rounded-top w-100">List of Orders</h2>
+            <thead>
+                <tr>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listInvoices}}
+                <tr>
+                    <td style="display: none;">{{_id}}</td>
+                    <td>{{employeeId}}</td>
+                    <td>{{totalItems}}</td>
+                    <td>{{totalAmount}}</td>
+                    <td>{{givenAmount}}</td>
+                    <td>{{excessAmount}}</td>
+                    <td>{{status}}</td>
+                    <td>{{formatDate createdAt}}</td>
+                    <td>{{formatDate purchaseDate}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">Number of Items</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Given Amount</th>
+                    <th scope="col">Excess Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Purchase Date</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /Row for Tables -->
+
+</div>
+<!-- /Dashboard Pane-->
+
+
