@@ -1,0 +1,72 @@
+{{#if exp}}
+{{#if changePw}}
+<div class="row">
+    <div class="d-flex align-items-center py-4 bg-body-tertiary">
+        <main class="form-signin w-100 m-auto">
+            <form style="max-width: 500px;" class="m-auto" method="post" action="/changePw">
+                <img class="mb-4" src="/images/logo.png" alt="" width="72" height="57">
+                <div class="row justify-content-md-center">
+                    <div class="col-5">
+                        <h1 class="h3 mb-3 fw-normal text-center">Change Password</h1>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="password" value="{{body.password}}">
+                    <label for="floatingInput">New Password</label>
+                    <div class="invalid-feedback mt-3">
+                        {{passwordErr}}
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit">Update</button>
+                <p class="mt-5 mb-3 text-body-secondary">COPYRIGHT © 2023 NHÓM 54</p>
+            </form>
+        </main>
+    </div>
+
+</div>
+{{/if}}
+{{else}}
+<p>{{msg}}</p>
+{{#if isChange}}
+<input type="text" name="" id="emailResend" value="{{email}}" hidden>
+
+<a href="/login" class="btn btn-primary">Login</a>
+{{else}}
+<button class="btn btn-primary" id="resendButton" onclick="resendLink()">
+    Resend link
+</button>
+<p id="msg"></p>
+{{/if}}
+{{/if}}
+
+<script>
+    function resendLink() {
+        // Vô hiệu hóa nút gửi khi bắt đầu gửi
+        document.getElementById('resendButton').disabled = true;
+
+        fetch('/resendAccessLink', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: $("#emailResend").val() // Giả sử 'email' là biến trong ngữ cảnh của bạn
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật container kết quả với thông báo thành công
+                    document.getElementById("msg").innerText = "Đã gửi lại link thông qua email";
+
+                    // Vô hiệu hóa nút gửi sau khi gửi thành công
+                    document.getElementById('resendButton').disabled = true;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Kích hoạt lại nút gửi trong trường hợp có lỗi
+                document.getElementById('resendButton').disabled = false;
+            });
+    }
+</script>

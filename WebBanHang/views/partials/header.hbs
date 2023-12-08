@@ -1,0 +1,61 @@
+<!-- Header -->
+<div class="col-12 col-lg-12 position-fixed px-0 shadow" id="header-wrapper">
+    <nav class="navbar navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+
+            <a class="navbar-brand fs-3 fw-bold" href="/" style="color: #145DA0;">Management</a>
+            <button id="btn-toggle-sidebar" class="ms-md-3 ms-lg-3 me-auto border-0">
+                <div class="square-wrapper">
+                    <i class="fa-solid fa-bars-staggered fa-2xl"></i>
+                </div>
+            </button>
+
+            <button class="d-lg-none border-0" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasResponsive">
+                <div class="square-wrapper">
+                    <i class="fa-solid fa-bars fa-2xl"></i>
+                </div>
+            </button>
+
+            <div class="offcanvas-lg offcanvas-end" tabindex="-1" id="offcanvasResponsive">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                        data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active fs-4 " href="#notification">
+                                <div class="circle-wrapper">
+                                    <i class="fa-solid fa-bell"></i>
+                                </div>
+                                <span class="d-lg-none">Notification</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle active fs-4" data-bs-toggle="dropdown">
+                                    <div class="circle-wrapper">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span>Admin</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="/admin/changePass">Change Pass</a></li>
+                                    <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                                </ul>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </nav>
+</div>
+<!-- /Header -->

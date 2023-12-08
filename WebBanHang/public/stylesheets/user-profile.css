@@ -1,0 +1,20 @@
+.salesList .list-group-item{
+    color: #fff;
+    background-color: #145DA0;
+}
+
+.salesList .list-group-item:hover {
+    color: #145DA0 !important;
+    background-color: #B1D4E0 !important;
+}
+
+.square-wrapper {
+    width: 3em;
+    height: 2.5em;
+    background-color: #145DA0;
+    color: white;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10%;
+}

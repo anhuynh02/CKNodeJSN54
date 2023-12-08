@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+{{#if userId}}
+<a class="btn btn-primary" href="/users">{{userName}}</a>
+
+
+    <a href="/logout" class="btn btn-primary" >Logout</a>
+<a class="btn btn-primary" href="/transaction">Transaction</a>
+
+{{else}}
+<a class="btn btn-primary" href="/login">Login</a>
+{{/if}}

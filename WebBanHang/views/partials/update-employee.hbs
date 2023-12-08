@@ -1,0 +1,66 @@
+<!-- Update employee dialog -->
+<div class="modal fade" id="updateEmployee" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Update Employee</h4>
+                <button type="button" id="updateEmployeeClose" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form style="max-width: 500px;" class="m-auto" id="updateEmployeeForm">
+                            <input id="updateFormId" type="text" class="form-control" name="id" hidden>
+
+                            <div class="form-floating mb-3">
+                                <input id="updateFormName" type="text" class="form-control" name="name">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeNameErr">
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    name="gender" id="updateFormGender">
+                                    <option selected>Chose your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeGenderErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormAddress" type="text" class="form-control" name="address">
+                                <label for="floatingInput">Address</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeAddressErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormBirth" type="date" class="form-control" name="birth">
+                                <label for="floatingInput">Birth</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeBirthErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormPhone" type="text" class="form-control" name="phone">
+                                <label for="floatingInput">Phone</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeePhoneErr">
+
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="updateEmployee(event)">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

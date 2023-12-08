@@ -1,0 +1,24 @@
+<!-- Change Status dialog -->
+<div class="modal fade" id="changeStatusEmployee" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change employee's status</h4>
+                <button id="changeStatusEmployeeClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="emailStatusChange" hidden>
+                <span> 
+                    <!-- ask change status will present here -->
+                </span>
+                <!-- Note -->
+                <strong id="changeEmail"></strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="changeStatusEmployee(event)">Change</button>
+            </div>
+        </div>
+    </div>
+</div>

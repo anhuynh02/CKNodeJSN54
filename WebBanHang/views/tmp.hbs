@@ -1,0 +1,179 @@
+{{!-- <div class="modal fade" id="newEmployee">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Add new employee</h4>
+                <button id="addEmployeeClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form style="max-width: 500px;" class="m-auto" id="addEmployeeForm">
+                            <div class="form-floating mb-3">
+                                <input id="addFormName" type="text" class="form-control" name="name" value="">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="addEmployeeNameErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="addFormEmail" type="email" class="form-control" name="email" value="">
+                                <label for="floatingInput">Email</label>
+                                <div class="invalid-feedback mt-3" id="addEmployeeEmailErr">
+
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="addEmployee(event)">Add</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+{{!-- <div class="modal fade" id="changeStatusEmployee">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Add new employee</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="text" id="emailStatusChange" hidden>
+                Bạn có muốn khóa/ mở khóa tài khoản <strong id="changeEmail"></strong>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="changeStatusEmployee(event)">Change</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<!-- Update employee dialog -->
+{{!-- <div class="modal fade" id="updateEmployee">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Update Employee</h4>
+                {{!-- <button type="button" class="btn-close" data-bs-dismiss="modal"></button> --}}
+                <button id="updateEmployeeClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <form style="max-width: 500px;" class="m-auto" id="updateEmployeeForm">
+                            <input id="updateFormId" type="text" class="form-control" name="id" hidden>
+
+                            <div class="form-floating mb-3">
+                                <input id="updateFormName" type="text" class="form-control" name="name">
+                                <label for="floatingInput">Name</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeNameErr">
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormGender" type="text" class="form-control" name="gender">
+                                <label for="floatingInput">Gender</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeGenderErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormAddress" type="text" class="form-control" name="address">
+                                <label for="floatingInput">Address</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeAddressErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormBirth" type="date" class="form-control" name="birth">
+                                <label for="floatingInput">Birth</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeeBirthErr">
+
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input id="updateFormPhone" type="text" class="form-control" name="phone">
+                                <label for="floatingInput">Phone</label>
+                                <div class="invalid-feedback mt-3" id="updateEmployeePhoneErr">
+
+                                </div>
+                            </div>
+                        </form>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="updateEmployee(event)">Update</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+
+
+
+
+
+
+
+
+{{!-- <div class="row g-3">
+
+            <div class="col-12 align-self-start">
+
+
+                
+            </div>
+
+            <!-- col-12 col-sm-12 col-md-12 col-lg-4 -->
+            {{!-- <div class="col-12 col-lg-4 align-self-start">
+                <h2 class="ps-3 py-2 m-0 bg-body-tertiary rounded-top">Top Selling Product</h2>
+                <table class="content-table content-table-hover fw-semibold bg-body-tertiary rounded shadow" id="top-selling-tb">
+                    <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="/images/bootstrap-logo.png" style="width:4em; aspect-ratio: 4/3;">
+                            </td>
+                            <td>ABC</td>
+                            <td>$1000</td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/bootstrap-logo.png" style="width:4em; aspect-ratio: 4/3;">
+                            </td>
+                            <td>ABC</td>
+                            <td>$1000</td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/bootstrap-logo.png" style="width:4em; aspect-ratio: 4/3;">
+                            </td>
+                            <td>ABC</td>
+                            <td>$1000</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> --}}
+        </div> --}}

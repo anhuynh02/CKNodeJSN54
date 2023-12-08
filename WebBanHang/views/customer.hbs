@@ -1,0 +1,259 @@
+<script>
+    function formatDate(birth) {
+        var date = new Date(birth);
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = date.getFullYear();
+        var second = date.getSeconds()
+        var minute = date.getMinutes();
+        var hour = date.getHours()
+        if (month < 10) {
+            month = "0" + month
+        }
+        // Định dạng lại thành dd/mm/yyyy
+        var formattedDate = `${hour}:${minute}:${second} ` + day + "-" + month + "-" + year;
+        return formattedDate
+    }
+    function formatId(id) {
+        return id.toString().slice(-5)
+    }
+    function formatPrice(price) {
+        // Chuyển đổi số thành chuỗi và thêm dấu chấm ngăn cách hàng nghìn
+        const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        // Thêm đơn vị tiền tệ
+        const result = `${formattedPrice} VND`;
+
+        return result;
+    }
+</script>
+<nav aria-label="breadcrumb" class="main-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Customer</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Customer Profile</li>
+    </ol>
+</nav>
+
+<div class="row gutters-sm">
+    <div class="col-12 col-md-2 mb-3">
+        <div class="card">
+            <div class="card-body border border-secondary">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <div class="mt-3">
+                        <h4>{{Customer.name}}</h4>
+                        <p class="text-secondary mb-3">Customer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-3 border border-secondary">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Address</h6>
+                    <span class="text-secondary">
+                        {{Customer.address}}
+                    </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Mobile</h6>
+                    <span class="text-secondary">
+                        {{Customer.phone}}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 col-md-10 bg-white border border-secondary rounded">
+        <h3 class="mt-3">Lịch sử mua hàng</h3>
+        <hr>
+        <table class="table table-borderless">
+            <thead>
+                <th>Mã đơn hàng</th>
+                <th>Giá trị</th>
+                <th>Ngày lập đơn</th>
+                <th>Ngày thanh toán</th>
+                <th>Trạng thái</th>
+            </thead>
+            <tbody>
+                {{#each Invoices}}
+                <tr data-bs-toggle="modal" data-bs-target="#InvoiceDetail" onclick="getInvoice('{{_doc._id}}')">
+                    <td>
+                        <script>
+                            document.write(formatId('{{_doc._id}}'))
+                        </script>
+                    </td>
+                    <td>
+                        <script>
+                            document.write(formatPrice({{ _doc.totalAmount }}))
+                        </script>
+                    </td>
+                    <td>
+                        <script>
+                            document.write(formatDate('{{_doc.createdAt}}'))
+                        </script>
+                    </td>
+                    <td>
+                        <script>
+                            document.write(formatDate('{{_doc.purchaseDate}}'))
+                        </script>
+                    </td>
+                    <td class="text-success">
+                        Đã Thanh Toán
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="modal fade" id="InvoiceDetail" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Chi tiết hóa đơn</h1>
+                <button id="addEmployeeClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <main class="form-signin w-100 m-auto">
+                        <table class="table table-borderless">
+                            <thead>
+                                <th>Tên sản phẩm</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody id="invoice-details-container">
+
+                            </tbody>
+                        </table>
+                    </main>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getInvoice(id) {
+        console.log(id)
+        fetch('/customers/getInvoice', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id
+            }),
+        })
+            .then(response => response.json()) // Assuming the server responds with JSON
+            .then(data => {
+                if (data.success) {
+                    console.log(data.invoice)
+                    renderInvoice(data.invoice)
+
+
+                } else {
+                    console.log(data)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+    }
+    function renderInvoice(invoice) {
+        $("#invoice-details-container").html("")
+        let totalAmount = 0
+        let count = 0
+        if (!invoice.invoiceDetail) {
+            $("#totalPrice").text(formatPrice(0))
+            $("#countProduct").text('0')
+        }
+        invoice.invoiceDetails.forEach(invoiceDetail => {
+            //
+            getInvoiceDetail(invoiceDetail).then(data => {
+                totalAmount += data.total
+                count++
+                $("#totalPrice").text(formatPrice(totalAmount))
+                $("#countProduct").text(count)
+                $("#invoice-details-container").append(data.tr)
+            }).then(err => {
+                console.log(err)
+            })
+        })
+    }
+    function getInvoiceDetail(id) {
+        return new Promise((resolve, reject) => {
+            fetch('/transaction/getInvoiceDetail', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    invoiceDetailId: id
+                }),
+            })
+                .then(response => response.json()) // Assuming the server responds with JSON
+                .then(data => {
+                    if (data.success) {
+                        getProductFromInvoiceDetail(data.invoiceDetail.productId).then(product => {
+                            let tr = ''
+                            console.log("Product:", product);
+                            invoiceDetail = data.invoiceDetail
+                            let price = formatPrice(invoiceDetail.price)
+                            let total = formatPrice(invoiceDetail.price * invoiceDetail.qty)
+                            tr = `<tr>
+                               <td hidden>${id}</td> 
+                               <td>${product.name}</td> 
+                               <td>${invoiceDetail.qty}
+                                </td>
+ 
+                               <td>${price}</td> 
+                               <td>${total}</td>
+                            </tr>`
+                            resolve({ tr, total: invoiceDetail.price * invoiceDetail.qty })
+                        })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    } else {
+                        reject(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
+    function getProductFromInvoiceDetail(id) {
+        return new Promise((resolve, reject) => {
+            fetch('/transaction/getProductFromInvoiceDetail', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: id
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        resolve(data.product);
+                    } else {
+                        reject(data); // Hoặc có thể truyền một thông báo lỗi cụ thể nếu cần
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+</script>

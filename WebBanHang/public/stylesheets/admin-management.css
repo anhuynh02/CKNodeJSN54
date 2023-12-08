@@ -1,0 +1,143 @@
+#layout-wrapper{
+    height: 100%;
+}
+
+#header-wrapper {
+    z-index: 2000;
+}
+
+#header-wrapper > nav {
+    height: 10vh;
+}
+
+#sidebar-wrapper{
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+    margin-top: 10vh;
+    background-color: #145DA0;
+    padding: 0;
+    transition: 0.5s;
+}
+
+#sidebar-wrapper > div.list-group{
+    height: 100%;
+    background-color: #145DA0;
+}
+
+#sidebar-logo-wrapper{
+    background-color: #FAD02C;
+}
+
+.list-group-item {
+    color: #fff;
+    background-color: #145DA0;
+}
+
+.list-group-item:hover {
+    color: #145DA0 !important;
+    background-color: #B1D4E0 !important;
+}
+
+.circle-wrapper {
+    width: 2em;
+    height: 2em;
+    background-color: #145DA0;
+    color: white;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.square-wrapper {
+    width: 3em;
+    height: 2.5em;
+    background-color: #145DA0;
+    color: white;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10%;
+}
+
+
+#content-wrapper{
+    height: 100%;
+    margin-top: 10vh;
+    z-index: 1;
+    transition: margin-left .5s;
+}
+
+
+.content-table{
+    border-collapse: collapse;
+    font-size: 1.2em;
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+}
+
+.content-table thead tr,
+.content-table tfoot tr{
+    background-color: #145DA0;
+    color: #fff;
+    z-index: 1;
+}
+
+
+.content-table th,
+.content-table td {
+    padding: 0.3em 0.4em;
+}
+
+.content-table tbody tr:first-child {
+    border-top: none;
+}
+
+.content-table tbody tr {
+    border-left: 1px solid #B9B7BD;
+    border-right: 1px solid #B9B7BD;
+    border-bottom: 1px solid #B9B7BD;
+}
+
+.content-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.content-table-hover tbody > tr:hover {
+    background-color:  #B1D4E0; 
+}
+
+.content-table tfoot tr th:first-child{
+    border-bottom-left-radius: 10px;
+}
+
+.content-table tfoot tr th:last-child{
+    border-bottom-right-radius: 10px;
+}
+
+#top-selling-tb tr td:first-child{
+    padding-right: 0;
+    width: 20%
+}
+/* 
+#products-pane thead > tr {
+    position: sticky; 
+    top: 10vh;
+}
+
+#employees-pane tr td:nth-child(2){
+    width: 10%
+}
+
+#employees-pane tr td:nth-child(3){
+    width: 30%
+}
+
+#employees-pane tr td:nth-child(4){
+    width: 10%
+} */
+
+#employee-detail-info-table > tbody > tr > td:first-child{
+    width: 20%;
+}
