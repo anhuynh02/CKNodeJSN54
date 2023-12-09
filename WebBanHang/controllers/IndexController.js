@@ -318,7 +318,7 @@ async function sendLoginLink(email) {
   const token = jwt.sign({ email }, secretKey, { expiresIn: "1m" });
 
   // Create the login link with the token
-  const loginLink = `http://localhost:3000/login/${token}`;
+  const loginLink = process.env.ENV == "PRODUCT"?`https://tdtustore.onrender.com/login/${token}`:`http://localhost:3000/login/${token}`;
 
   const myAccessTokenObject = await myOAuth2Client.getAccessToken();
   // Access Token sẽ nằm trong property 'token' trong Object mà chúng ta vừa get được ở trên

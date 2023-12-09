@@ -65,7 +65,6 @@ app.use(
 );
 
 app.locals.formatDate = formatDate;
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);

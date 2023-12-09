@@ -28,10 +28,11 @@
 {{else}}
 <p>{{msg}}</p>
 {{#if isChange}}
-<input type="text" name="" id="emailResend" value="{{email}}" hidden>
 
 <a href="/login" class="btn btn-primary">Login</a>
 {{else}}
+<input type="text" name="" id="emailResend" value="{{email}}" hidden>
+
 <button class="btn btn-primary" id="resendButton" onclick="resendLink()">
     Resend link
 </button>
