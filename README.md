@@ -1,12 +1,7 @@
-# CKNodeJSN54
-
- Huỳnh Trí Thông
-
 **Thông tin thành viên**
 
-Huỳnh Trí Thông - 52000719
-Trần Văn Phát 	- 52100919
-Tăng Thế Phong 	- 52000701
+Huỳnh Trí Thông
+Trần Văn Phát 	
 
 ***Các tài khoản tạo sẵn***
 
